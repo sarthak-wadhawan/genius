@@ -3,12 +3,15 @@ import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
+import Groq from 'groq-sdk';
+
 const configuration = new Configuration({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
-
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 export async function POST(
   req: Request
 ) {
@@ -35,12 +38,12 @@ export async function POST(
       return new NextResponse("Free Trial has expired :/", { status: 403});
      }
     
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+    const response = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
       messages
     });
     await increaseApiLimit();
-    return NextResponse.json(response.data.choices[0].message);
+    return NextResponse.json(response.choices[0].message);
 } catch (error: any) {
     console.log('[CONVERSATION_ERROR]', error);
 
@@ -49,6 +52,6 @@ export async function POST(
         console.error('[CONVERSATION_ERROR_DETAILS]', error.response.data);
     }
 
-    return new NextResponse("Internal Error bozo", { status: 500 });
+    return new NextResponse("Internal Error ", { status: 500 });
 }
 };

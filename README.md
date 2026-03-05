@@ -84,6 +84,9 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
 # Open AI API Docs (platform.openai.com/docs/api-reference)
 NEXT_PUBLIC_OPENAI_API_KEY=
 
+# Groq API Key (console.groq.com)
+GROQ_API_KEY=
+
 # Replicate API Docs (replicate.com/docs)
 REPLICATE_API_TOKEN=
 
@@ -106,6 +109,3 @@ Step 4 - Run app locally
 ```bash
 npm run dev
 ```
-
-
-
